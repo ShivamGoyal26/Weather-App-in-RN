@@ -12,6 +12,7 @@ import {
 
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const HomeScreen = props => {
 
@@ -20,18 +21,17 @@ const HomeScreen = props => {
   const [currentLongitude, setCurrentLongitude] = useState('...');
   const [currentLatitude, setCurrentLatitude] = useState('...');
   const [locationStatus, setLocationStatus] = useState('');
+  const [done, setDone] = useState(false);
 
 
   const getLocationName = () => {
-    // 2ec381ce0f6e7d0f399a48f0d48c70fa
-   let url =  'https://api.openweathermap.org/data/2.5/forecast?lat=' + currentLatitude + '&lon=' + currentLongitude + '&units=metric&appid=2ec381ce0f6e7d0f399a48f0d48c70fa';
-    // console.log(response)
+    let url = 'https://api.openweathermap.org/data/2.5/forecast?lat=' + currentLatitude + '&lon=' + currentLongitude + '&units=metric&appid=2ec381ce0f6e7d0f399a48f0d48c70fa';
     fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.city.name)
-        
-        })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.city.name)
+
+      })
   }
 
   useEffect(() => {
@@ -104,6 +104,7 @@ const HomeScreen = props => {
         //Will give you the location on location change
 
         setLocationStatus('You are Here');
+        setDone(true)
         console.log(position);
 
         //getting the Longitude from the location json        
@@ -134,63 +135,56 @@ const HomeScreen = props => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.container}>
-          <Image
-            source={{
-              uri:
-                'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
-            }}
-            style={{ width: 100, height: 100 }}
-          />
-          <Text style={styles.boldText}>
-            {locationStatus}
-          </Text>
-          <Text
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 16,
-            }}>
-            Longitude: {currentLongitude}
-          </Text>
-          <Text
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 16,
-            }}>
-            Latitude: {currentLatitude}
-          </Text>
-          <View style={{ marginTop: 20 }}>
-            <Button
-              title="Update the Weather"
-              onPress={getOneTimeLocation}
-            />
-             <Button
-             style={{marginTop: 20}}
-              title="Check the Weather"
-              onPress={() => {
-                  // props.navigation.navigate("Result", {lat: currentLatitude, lon: currentLongitude})
-                  props.navigation.navigate("Weather", {lat: currentLatitude, lon: currentLongitude});
+
+
+          <View style={{justifyContent: 'center', alignItems: 'center', marginTop: 20}}>
+            <Image
+              source={{
+                uri:
+                  'https://raw.githubusercontent.com/AboutReact/sampleresource/master/location.png',
               }}
+              style={{ width: 100, height: 100 }}
             />
+            <Text style={styles.boldText}>
+              {locationStatus}
+            </Text>
+          </View>
+
+
+          <View>
+            <Text
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 16,
+              }}>
+              Longitude: {currentLongitude}
+            </Text>
+            <Text
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 16,
+              }}>
+              Latitude: {currentLatitude}
+            </Text>
+          </View>
+
+
+          <View style={{ marginBottom: 20 }}>
+
+            <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={getOneTimeLocation}>
+              <Text style={{ fontSize: 20, color: 'grey' }}>Get the update Location</Text>
+            </TouchableOpacity>
+
+           { done && <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={() => {
+              props.navigation.navigate("Weather", { lat: currentLatitude, lon: currentLongitude })
+            }}>
+              <Text style={{ fontSize: 20, color: 'grey', marginTop: 20 }}>Check the Weather!</Text>
+            </TouchableOpacity>}
+
           </View>
         </View>
-        <Text
-          style={{
-            fontSize: 18,
-            textAlign: 'center',
-            color: 'grey'
-          }}>
-          React Native Geolocation
-        </Text>
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: 'center',
-            color: 'grey'
-          }}>
-          Let's check weather
-        </Text>
       </View>
     </SafeAreaView>
   );
@@ -198,11 +192,11 @@ const HomeScreen = props => {
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'space-between',
     flex: 1,
     backgroundColor: 'white',
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   boldText: {
     fontSize: 25,

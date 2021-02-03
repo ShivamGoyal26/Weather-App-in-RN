@@ -12,6 +12,8 @@ const Weather = props => {
 
     var currentLatitude = props.route.params.lat
     var currentLongitude = props.route.params.lon
+    // var currentLatitude = 	34.052235
+    // var currentLongitude = -118.243683
 
     let url = 'https://api.openweathermap.org/data/2.5/weather?lat=' + currentLatitude + '&lon=' + currentLongitude + '&units=metric&appid=2ec381ce0f6e7d0f399a48f0d48c70fa';
 
@@ -21,8 +23,6 @@ const Weather = props => {
         fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log("THIS IS THE TEMP OF THE CURRENT LOACTION")
-                console.log(data.name)
                 setCity(data.name)
                 setTemp(data.main.temp)
                 setWeatherCon(data.weather[0].main)
@@ -44,9 +44,11 @@ const Weather = props => {
                 <MaterialCommunityIcons size={100} name="weather-sunny" color={'#fff'} />
                 <Text style={styles.tempText}>{temp}˚</Text>
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 10, justifyContent: 'space-evenly' }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', padding: 20, width: '100%', backgroundColor: 'black', justifyContent: 'space-between' }}>
                 <MaterialCommunityIcons size={100} name="city" color={'#fff'} />
+                <View style={{}}>
                 <Text style={styles.tempText}>{city}</Text>
+                </View>
             </View>
             <View style={styles.bodyContainer}>
                 <Text style={styles.title}>{weatherCon}</Text>
