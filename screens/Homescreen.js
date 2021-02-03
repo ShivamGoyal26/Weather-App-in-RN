@@ -162,14 +162,15 @@ const HomeScreen = props => {
           </Text>
           <View style={{ marginTop: 20 }}>
             <Button
-              title="Button"
+              title="Update the Weather"
               onPress={getOneTimeLocation}
             />
              <Button
              style={{marginTop: 20}}
-              title="Get the Name of Location"
+              title="Check the Weather"
               onPress={() => {
-                  props.navigation.navigate("Result", {lat: currentLatitude, lon: currentLongitude})
+                  // props.navigation.navigate("Result", {lat: currentLatitude, lon: currentLongitude})
+                  props.navigation.navigate("Weather", {lat: currentLatitude, lon: currentLongitude});
               }}
             />
           </View>
